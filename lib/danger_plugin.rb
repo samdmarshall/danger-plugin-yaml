@@ -19,6 +19,8 @@ module Danger
       current_slug = env.ci_source.repo_slug
 
       lint_results = Hash[found_files.uniq.collect { |yaml| [yaml, run_yamllint(yaml)] }]
+
+      lint_results.delete_if { |path, results| results.count == 0 }
       
       if lint_results.count > 0
         message = "### yamllint found issues\n\n"
